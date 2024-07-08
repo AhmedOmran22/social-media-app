@@ -1,0 +1,12 @@
+const String kUserPosts = 'userPosts';
+const String kUserEmail = 'useremail';
+const String kTimesTamps = 'timesTamps';
+const String kMessage = 'message';
+const String kPostId = 'id';
+const String kLikes = 'Likes';
+const String kUsers = 'users';
+const String kUserName = 'userName';
+const String kBio = "Bio";
+const String kComments = 'comments';
+const String kCommentContent = 'comment';
+const String kCommentedBy = 'Commented by';
