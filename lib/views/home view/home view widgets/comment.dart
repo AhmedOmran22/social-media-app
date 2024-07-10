@@ -26,21 +26,21 @@ class Comment extends StatelessWidget {
               color: Colors.grey[600],
             ),
           ),
+          Text(
+            commentModel.comment,
+          ),
+          const SizedBox(width: 5),
           Row(
+            mainAxisAlignment: MainAxisAlignment.end,
             children: [
-              Text(
-                commentModel.comment,
-              ),
-              const SizedBox(width: 5),
-              const Spacer(),
               Text(
                 commentModel.time,
                 style: TextStyle(
                   color: Colors.grey[600],
                 ),
-              )
+              ),
             ],
-          )
+          ),
         ],
       ),
     );

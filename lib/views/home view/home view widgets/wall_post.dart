@@ -28,83 +28,12 @@ class _WallPostState extends State<WallPost> {
   final currentUser = FirebaseAuth.instance.currentUser!;
   final commentController = TextEditingController();
   bool isLiked = false;
-  @override
-  void initState() {
-    isLiked = widget.postModel.likes.contains(currentUser.email);
-    super.initState();
-  }
 
-  void toggleLike() {
-    setState(() {
-      isLiked = !isLiked;
-    });
-
-    DocumentReference postRef =
-        FirebaseFirestore.instance.collection(kUserPosts).doc(widget.postId);
-
-    if (isLiked) {
-      postRef.update(
-        {
-          kLikes: FieldValue.arrayUnion(
-            [currentUser.email],
-          ),
-        },
-      );
-    } else {
-      postRef.update(
-        {
-          kLikes: FieldValue.arrayRemove(
-            [currentUser.email],
-          ),
-        },
-      );
-    }
-  }
-
-  void showCommentDialog() {
-    showDialog(
-        context: context,
-        builder: (context) {
-          return AlertDialog(
-            title: const Text('Add Comment'),
-            content: TextField(
-              controller: commentController,
-              decoration: const InputDecoration(
-                hintText: 'Write a comment',
-              ),
-            ),
-            actions: [
-              TextButton(
-                onPressed: () async {
-                  addComment(commentController.text);
-                  commentController.clear();
-                  Navigator.of(context).pop();
-                },
-                child: const Text('Add'),
-              ),
-              TextButton(
-                onPressed: () {
-                  Navigator.of(context).pop();
-                  commentController.clear();
-                },
-                child: const Text('Cancel'),
-              ),
-            ],
-          );
-        });
-  }
-
-  void addComment(String commentText) async {
-    await FirebaseFirestore.instance
-        .collection(kUserPosts)
-        .doc(widget.postId)
-        .collection(kComments)
-        .add({
-      kCommentContent: commentText,
-      kCommentedBy: currentUser.email,
-      kTimesTamps: Timestamp.now(),
-    });
-  }
+  // @override
+  // void initState() {
+  //   isLiked = widget.postModel.likes.contains(currentUser.email);
+  //   super.initState();
+  // }
 
   @override
   Widget build(BuildContext context) {
@@ -121,13 +50,6 @@ class _WallPostState extends State<WallPost> {
                 const SizedBox(width: 10),
                 Text(
                   widget.postModel.userEmail,
-                  style: TextStyle(
-                    color: Colors.grey[500],
-                  ),
-                ),
-                const Spacer(),
-                Text(
-                  widget.postModel.time,
                   style: TextStyle(
                     color: Colors.grey[500],
                   ),
@@ -160,15 +82,20 @@ class _WallPostState extends State<WallPost> {
                   SizedBox(width: MediaQuery.of(context).size.width * .1),
                   Column(
                     children: [
-                         CommentButton(
-                          onTap: () {
-                            showCommentDialog();
-                          },
-                        
+                      CommentButton(
+                        onTap: () {
+                          showCommentDialog();
+                        },
                       ),
                     ],
                   ),
                 ],
+              ),
+            ),
+            Text(
+              widget.postModel.time,
+              style: TextStyle(
+                color: Colors.grey[500],
               ),
             ),
 
@@ -178,5 +105,80 @@ class _WallPostState extends State<WallPost> {
         ),
       ),
     );
+  }
+
+  void toggleLike() {
+    setState(() {
+      isLiked = !isLiked;
+    });
+
+    DocumentReference postRef =
+        FirebaseFirestore.instance.collection(kUserPosts).doc(widget.postId);
+
+    if (isLiked) {
+      postRef.update(
+        {
+          kLikes: FieldValue.arrayUnion(
+            [currentUser.email],
+          ),
+        },
+      );
+    } else {
+      postRef.update(
+        {
+          kLikes: FieldValue.arrayRemove(
+            [currentUser.email],
+          ),
+        },
+      );
+    }
+  }
+
+  void showCommentDialog() {
+    showDialog(
+      context: context,
+      builder: (context) {
+        return AlertDialog(
+          title: const Text('Add Comment'),
+          content: TextField(
+            controller: commentController,
+            decoration: const InputDecoration(
+              hintText: 'Write a comment',
+            ),
+          ),
+          actions: [
+            TextButton(
+              onPressed: () async {
+                if (commentController.text.isNotEmpty) {
+                  addComment(commentController.text);
+                  commentController.clear();
+                  Navigator.of(context).pop();
+                }
+              },
+              child: const Text('Add'),
+            ),
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop();
+                commentController.clear();
+              },
+              child: const Text('Cancel'),
+            ),
+          ],
+        );
+      },
+    );
+  }
+
+  void addComment(String commentText) async {
+    await FirebaseFirestore.instance
+        .collection(kUserPosts)
+        .doc(widget.postId)
+        .collection(kComments)
+        .add({
+      kCommentContent: commentText,
+      kCommentedBy: currentUser.email,
+      kTimesTamps: Timestamp.now(),
+    });
   }
 }

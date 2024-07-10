@@ -1,4 +1,3 @@
-import 'dart:developer';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
@@ -31,7 +30,6 @@ class PostBuilder extends StatelessWidget {
               ),
             );
             postId.add(snapshot.data!.docs[i].id);
-            log(postId[i].toString());
           }
           return ListView.builder(
             itemCount: snapshot.data!.docs.length,
