@@ -29,11 +29,11 @@ class _WallPostState extends State<WallPost> {
   final commentController = TextEditingController();
   bool isLiked = false;
 
-  // @override
-  // void initState() {
-  //   isLiked = widget.postModel.likes.contains(currentUser.email);
-  //   super.initState();
-  // }
+  @override
+  void initState() {
+    isLiked = widget.postModel.likes.contains(currentUser.email);
+    super.initState();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -80,20 +80,16 @@ class _WallPostState extends State<WallPost> {
                     ],
                   ),
                   SizedBox(width: MediaQuery.of(context).size.width * .1),
-                  Column(
-                    children: [
-                      CommentButton(
-                        onTap: () {
-                          showCommentDialog();
-                        },
-                      ),
-                    ],
+                  CommentButton(
+                    onTap: () {
+                      showCommentDialog();
+                    },
                   ),
                 ],
               ),
             ),
             Text(
-              widget.postModel.time,
+              'Posted at' '${widget.postModel.time} ',
               style: TextStyle(
                 color: Colors.grey[500],
               ),
