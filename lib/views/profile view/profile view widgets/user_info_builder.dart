@@ -124,7 +124,6 @@ class _UserInfoBuilderState extends State<UserInfoBuilder> {
                 title: const Text(
                   'Edit Name ',
                   style: TextStyle(
-                    color: Colors.white,
                   ),
                 ),
                 content: TextField(
