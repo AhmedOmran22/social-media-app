@@ -29,7 +29,7 @@ class HomeView extends StatelessWidget {
         foregroundColor: Colors.white,
         centerTitle: true,
         title: const Text(
-          'The wall ',
+          'TrendFlow',
           style: TextStyle(
             fontSize: 25,
             color: Colors.white,
